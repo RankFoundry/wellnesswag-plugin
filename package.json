@@ -1,0 +1,11 @@
+{
+  "name": "wellness-wag",
+  "version": "1.0.0",
+  "description": "A plugin of custom features for use by Wellness Wag.",
+  "scripts": {
+    "build": "tailwindcss build src/styles.css -o assets/css/tailwind.css"
+  },
+  "dependencies": {
+    "tailwindcss": "^3.3.3"
+  }
+}
