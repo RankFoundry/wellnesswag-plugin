@@ -12,7 +12,7 @@
  * Plugin Name: Wellness Wag
  * Plugin URI:  https://rankfoundry.com/plugins/seo
  * Description: A plugin of custom features for use by Wellness Wag.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      Rank Foundry
  * Author URI:  https://rankfoundry.com
  * License:     GPL-2.0+
@@ -28,7 +28,7 @@ if (!defined('WPINC')) {
 
 // Define plugin version
 if (!defined('WELLNESS_WAG_VERSION')) {
-    define('WELLNESS_WAG_VERSION', '1.0.0');
+    define('WELLNESS_WAG_VERSION', '1.0.1');
 }
 
 // Define plugin directory path
