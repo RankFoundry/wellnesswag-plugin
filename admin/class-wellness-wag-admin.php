@@ -29,6 +29,9 @@ class Wellness_Wag_Admin {
     public const page_slug = "wellness-wag";
     public const page_title = "Wellness Wag Settings";
     public const menu_title = "Wellness Wag";
+    private $states_option_name = 'wellnesswag_states';
+    private $states;
+
     
     public function __construct($plugin_name, $version) {
         $this->plugin_name = $plugin_name;
@@ -50,6 +53,7 @@ class Wellness_Wag_Admin {
         );
 
         add_submenu_page($this::page_slug, 'Dashboard', 'Dashboard', 'manage_options', $this::page_slug, array($this, 'display_dashboard_page'));
+        add_submenu_page($this::page_slug, 'States', 'States', 'manage_options', $this::page_slug . '-states', array($this, 'display_states_page'));
     }
 
     // Display the general page
@@ -57,10 +61,37 @@ class Wellness_Wag_Admin {
         include_once 'partials/admin-dashboard.php';
     }
     
+    // Display the states page
+    public function display_states_page() {
+        include_once 'partials/admin-states.php';
+    }
     
     // Register settings
     public function register_settings() {
-        
+        register_setting($this->plugin_name, $this->states_option_name);
+    }
+
+    // Fetch States
+    public function fetch_states() {
+        $states = new WellnessWag_States($this->plugin_name, $this->version);
+        $state_urls = $states->get_state_urls();
+    
+        $states_data = array();
+        foreach ($state_urls as $state => $url) {
+            $states_data[] = array('name' => $state, 'url' => $url);
+        }
+    
+        echo json_encode($states_data);
+        exit;
+    }
+    
+    // Reset Defaults
+    public function reset_states() {
+        $this->states = new WellnessWag_States($this->plugin_name, $this->version);
+        delete_option($this->states_option_name);
+        $this->states->register_default_urls();
+        echo json_encode(['success' => true, 'message' => 'Data reset successfully']);
+        exit;
     }
 
     public function enqueue_styles() {

@@ -12,7 +12,7 @@
  * Plugin Name: Wellness Wag
  * Plugin URI:  https://rankfoundry.com/plugins/seo
  * Description: A plugin of custom features for use by Wellness Wag.
- * Version:     1.0.2
+ * Version:     1.0.3
  * Author:      Rank Foundry
  * Author URI:  https://rankfoundry.com
  * License:     GPL-2.0+
@@ -28,7 +28,7 @@ if (!defined('WPINC')) {
 
 // Define plugin version
 if (!defined('WELLNESS_WAG_VERSION')) {
-    define('WELLNESS_WAG_VERSION', '1.0.2');
+    define('WELLNESS_WAG_VERSION', '1.0.3');
 }
 
 // Define plugin directory path
@@ -47,10 +47,16 @@ require_once WELLNESS_WAG_PLUGIN_DIR . 'vendor/autoload.php';
 // Include the main class file
 require_once WELLNESS_WAG_PLUGIN_DIR . 'includes/class-wellness-wag.php';
 
-
 // Begin execution of the plugin.
 function run_wellness_wag() {
     $plugin = new Wellness_Wag();
+
+    // Register state urls on activation
+    register_activation_hook(WELLNESS_WAG_FILE, array($plugin, 'activate'));
+
+    // Remove state urls on deactivation
+    register_deactivation_hook(WELLNESS_WAG_FILE, array($plugin, 'deactivate'));
+
     $plugin->run();
 }
 

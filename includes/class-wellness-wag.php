@@ -22,6 +22,9 @@ class Wellness_Wag {
      */
     protected $version;
 
+    private $admin;
+    private $states;
+
     /**
      * Define the core functionality of the plugin.
      */
@@ -47,7 +50,8 @@ class Wellness_Wag {
      * Load the required dependencies for this plugin.
      */
     private function load_dependencies() {
-
+        require_once WELLNESS_WAG_PLUGIN_DIR . 'includes/class-wellness-wag-states.php';
+        require_once WELLNESS_WAG_PLUGIN_DIR . 'public/class-wellness-wag-shortcode.php';
     }
 
     /**
@@ -65,11 +69,10 @@ class Wellness_Wag {
             'https://github.com/rankfoundry/wellnesswag-plugin/',
             WELLNESS_WAG_FILE,
             'wellness-wag',
-            48
         );
 
         //Set the branch that contains the stable release.
-        $pluginUpdateChecker->setBranch('master');
+        $pluginUpdateChecker->setBranch('main');
 
         //Optional: If you're using a private repository, specify the access token like this:
         //$myUpdateChecker->setAuthentication('your-token-here');
@@ -87,13 +90,37 @@ class Wellness_Wag {
         add_action('admin_enqueue_scripts', array($this->admin, 'enqueue_styles'));
         add_action('admin_menu', array($this->admin, 'add_menu'));
         add_action('admin_init', array($this->admin, 'register_settings'));
+
+        $this->states = new WellnessWag_States($this->plugin_name, $this->version);
+        register_setting($this->plugin_name, 'wellnesswag_states', array($this, 'sanitize_urls'));
+
+        // Add AJAX handler for the sync
+        add_action('wp_ajax_reset_states', array($this->admin, 'reset_states'));
+        add_action('wp_ajax_fetch_states', array($this->admin, 'fetch_states'));
     }
 
     /**
      * Register all of the hooks related to the public-facing functionality.
      */
     private function define_public_hooks() {
-        // This will involve enqueueing scripts/styles for the frontend, and other related functions.
+        $shortcode = new WellnessWag_Shortcode($this->plugin_name, $this->version);
+        add_shortcode('wellnesswag-state-dropdown', array($shortcode, 'state_dropdown'));
+    }
+
+    /**
+     * Actions to perform on plugin activation.
+     */
+    public function activate() {
+        $states = new WellnessWag_States($this->plugin_name, $this->version);
+        $states->register_default_urls();
+    }
+
+    /**
+     * Actions to perform on plugin deactivation.
+     */
+    public function deactivate() {
+        $states = new WellnessWag_States($this->plugin_name, $this->version);
+        $states->remove_urls();
     }
 
     /**

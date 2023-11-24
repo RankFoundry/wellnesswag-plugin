@@ -5,7 +5,7 @@ if(!isset($currentPage)) {
 }
 
 // Determine the active menu based on currentPage
-$activeMenu = ['Dashboard' => ''];
+$activeMenu = ['Dashboard' => '', 'States' => ''];
 if(isset($activeMenu[$currentPage])) {
     $activeMenu[$currentPage] = 'bg-slate-50 text-slate-900 rounded-t-md px-3 py-2';
 }
@@ -35,6 +35,7 @@ if(isset($activeMenu[$currentPage])) {
         <div class="pl-8">
             <nav class="-mb-px flex space-x-8" aria-label="Tabs">
                 <a href="<?php echo menu_page_url('wellness-wag', false); ?>" class="<?php echo $activeMenu['Dashboard']; ?> border-transparent text-slate-500 hover:text-slate-700 whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium">Dashboard</a>
+                <a href="<?php echo menu_page_url('wellness-wag-states', false); ?>" class="<?php echo $activeMenu['States']; ?> border-transparent text-slate-500 hover:text-slate-700 whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium">States</a>
             </nav>
         </div>
     </div>
