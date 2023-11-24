@@ -13,3 +13,4 @@ Thumbs.db
 dist/
 *.log
 *.tmp
+*.lock
