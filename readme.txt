@@ -17,6 +17,7 @@ A plugin of custom features for use by Wellness Wag.
 
 = 1.0.3 = 
 * Add: state dropdown shortcode
+* Update: NPM security
 
 = 1.0.2 =
 * Update: menu icon
